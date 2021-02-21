@@ -1,7 +1,7 @@
 Planning
 
 Page - Season (box scores list)  : https://www.baseball-reference.com/
-leagues/MLB/2017-schedule.shtml
+leagues/MLB/2018-schedule.shtml
 
 Page - Box score : https://www.baseball-reference.com/
 /BAL/BAL201803290.shtml
