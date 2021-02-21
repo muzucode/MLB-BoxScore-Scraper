@@ -1,5 +1,5 @@
 import requests
-
+# Status: planning phase
 URL = 'https://www.baseball-reference.com/leagues/MLB/2018-schedule.shtml'
 page = requests.get(URL)
 response = page.text
