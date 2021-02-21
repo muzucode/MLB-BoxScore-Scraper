@@ -12,7 +12,7 @@ YYYY.mm.dd.2 for game 2 of double header
 Notes:
 Box score link is surrounded by <em></em>
 
-
+Scraping phase 1 - (Gather boxscore URLs from leagues page)
 Loop through the created string of HTML code
 -Search for <a href="/boxes/XYZ/GAMEID">Boxscore</a>
 -Save the "/boxes/XYZ/..." extension to a list or extensions
