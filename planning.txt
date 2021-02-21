@@ -19,7 +19,7 @@ Scraping phase 1 - (Gather boxscore URLs from leagues page)
 
 -Loop through the created string of HTML code
 -Search for <a href="/boxes/XYZ/GAMEID">Boxscore</a>
--Save the "/boxes/XYZ/..." extension to a list or extensions
+-Save the "/boxes/XYZ/GAMEID" extension to a list oF extensions
 -To avoid duplication, do if statement to check that the GAMEID is unique
--Return of for loop is the extension found and is added to boxscores_urls variables
+-Return value is the extension found and is added to boxscores_urls variables
 
