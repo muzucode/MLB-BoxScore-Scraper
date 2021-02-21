@@ -3,7 +3,17 @@ leagues/MLB/2017-schedule.shtml
 
 Page - Box score : https://www.baseball-reference.com/
 /BAL/BAL201803290.shtml
-YYYY.mm.dd.0
+YYYY.mm.dd.0 for single game
+YYYY.mm.dd.1 for game 1 of double header
+YYYY.mm.dd.2 for game 2 of double header
 
 Notes:
-Box score link is surrounded by <em></em>~
+Box score link is surrounded by <em></em>
+
+
+Loop through the created string of HTML code
+-Search for <a href="/boxes/XYZ/GAMEID">Boxscore</a>
+-Save the "/boxes/XYZ/..." extension to a list or extensions
+-To avoid duplication, do if statement to check that the GAMEID is unique
+-Return of for loop is the extension found and is added to boxscores_urls variables
+
