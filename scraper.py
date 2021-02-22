@@ -97,6 +97,7 @@ def getBoxes():
                     # else:
                     #     print('--at-- #',r+1,' of ',len(matches_positions3), ' was skipped over for --at-- to --@-- replacement due to being in a team name.')
 
+            # Get index of '@' and 'BoxScore' for team name slicing
             y = x.index('@')
             z = x.index('BoxScore')
             awayTeam = x[0:y]
