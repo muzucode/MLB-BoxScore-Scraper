@@ -15,11 +15,15 @@ Box score link is surrounded by <em></em>
 
 
 --------------------------------------------------------------------------
-Scraping phase 1 - (Gather boxscore URLs from leagues page)
-
+Scraping phase 1 - Gather League Page HTML
 -Loop through the created string of HTML code
--Search for <a href="/boxes/XYZ/GAMEID">Boxscore</a>
--Save the "/boxes/XYZ/GAMEID" extension to a list oF extensions
--To avoid duplication, do if statement to check that the GAMEID is unique
--Return value is the extension found and is added to boxscores_urls variables
+-Save the "/boxes/XYZ/GAMEID" extension to a list of extensions
+
+Scraping phase 2 - Gather Boxes Page HTML
+-Save away team name to variable (listed first)
+-Save home team name to variable (listed first)
+-Extract batting tables to separate pandas dataframes
+-Extract pitching tables to separate pandas dataframes
+-Concat both tables
+
 
