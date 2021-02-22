@@ -1,13 +1,9 @@
 import requests
 import re
 import pandas as pd
-
+import lxml
 pd.set_option('display.max_columns', 15)
 pd.set_option('display.width', 1000)
-import lxml
-
-
-
 
 def getLeague():
 
@@ -38,6 +34,7 @@ def getLeague():
             break
 
     return extensions
+
 
 def getBoxes():
     # Get all URL path extensions for boxscores
@@ -106,6 +103,7 @@ def getBoxes():
             homeTeam = x[y + 1:z]
 
             return [awayTeam, homeTeam]
+
 
         # Assign teams with getTeams()
         teams = getTeams()
