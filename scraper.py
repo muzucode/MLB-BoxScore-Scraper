@@ -1,13 +1,16 @@
 import requests
 import re
 import pandas as pd
-from selenium import webdriver
+
 import html5lib
 from bs4 import BeautifulSoup
-pd.set_option('display.max_columns', 6)
+pd.set_option('display.max_columns', 15)
 pd.set_option('display.width', 1000)
 import lxml
-# Status: planning phase
+
+
+
+
 def getLeague():
 
     URL = 'https://www.baseball-reference.com/leagues/MLB/2018-schedule.shtml'
@@ -15,35 +18,39 @@ def getLeague():
     response = page.text
     extensions = []
 
-    # Write to file
-    # file = open('league_staging.html', 'w')
-    # file.write(response)
-    # file.close()
-
     # Create substring of the boxes element
     ss = '&nbsp;&nbsp;&nbsp;&nbsp;<em><a href="/boxes'
     matches = re.finditer(ss, response)
     matches_positions = [match.start() for match in matches]
 
-    counter = 0
+    numboxes = 0
 
+    # Creates list of box score URL extensions
     for i in range(len(matches_positions)):
-        counter+=1
+        # Iterates until numboxes value breaks loop
+        # Each loop adds one boxscore extension to be fetched
+        numboxes+=1
         ind = matches_positions[i]
         line= response[ind:ind+66]
         extensions.append(line[38:])
         print('Box score: %s' % i, extensions[i])
-        if counter == 10:
-          break
+
+        # numTeams determines num of box score requests
+        if numboxes == 10:
+            break
 
     return extensions
 
-def getBox():
+def getBoxes():
     # Get all URL path extensions for boxscores
     extensions = getLeague()
+    masterAwayBatting = []
+    masterAwayPitching = []
+    masterHomeBatting = []
+    masterHomePitching = []
+    masterBoxes = []
 
     # Cycle through all the extensions passed over
-    counter = 0
     for i in range(len(extensions)):
         URL = 'https://www.baseball-reference.com/%s' % extensions[i]
         source = requests.get(URL)
@@ -53,7 +60,7 @@ def getBox():
         source = source.replace("<!--", "")
         source = source.replace("-->", "")
 
-        # Get away and home team for dynamic design
+        # Get away and home team names for dynamic design
         def getTeams():
             # Search for <title> to dynamically assign team variables
             ss1 = '<title>'
@@ -68,30 +75,64 @@ def getBox():
             # X = entire title code
             x = source[ind1 + 7:ind2]
             # Clean up title code for indexing
-            x = x.replace('at', '@')
             x = x.replace(' ', '')
-            x = x.replace('.','')
+            x = x.replace('.', '')
+            # Find all iterations of 'at'
+            matches3 = re.finditer('at', x)
+            matches_positions3 = [match.start() for match in matches3]
+
+
+            # If there is 1 'at', just replace with @
+            if len(matches_positions3) == 1:
+                x = x.replace('at', '@')
+            else:
+                # If there are 2+ 'at', cycle through and replace by index
+                for r in range(len(matches_positions3)):
+                    # If the character to the right of 'at' is uppercase, then reformat the string
+                    if x[matches_positions3[r]+2].isupper():
+                        # print('Successfully replaced --at-- with --@--')
+                        atInd = matches_positions3[r]
+                        x = x[:atInd]+'@'+ x[atInd+2:]
+                        # Break statement to leave 'at' instance cycling
+                        # Once an 'at' meets this condition, then the problem is solved
+                        break
+                    # else:
+                    #     print('--at-- #',r+1,' of ',len(matches_positions3), ' was skipped over for --at-- to --@-- replacement due to being in a team name.')
+
             y = x.index('@')
             z = x.index('BoxScore')
             awayTeam = x[0:y]
             homeTeam = x[y + 1:z]
+
+            # Final cleaning (removing @ from team names with 'at' in them
+
             return [awayTeam, homeTeam]
 
+        # Assign teams with getTeams()
         teams = getTeams()
-        print(teams)
-        tables = []
-        awayBatting = pd.read_html(source, attrs = {'id': '%sbatting' % teams[0]})
-        homeBatting = pd.read_html(source, attrs = {'id': '%sbatting' % teams[1]})
-        awayPitching = pd.read_html(source, attrs={'id': '%spitching' % teams[0]})
-        homePitching = pd.read_html(source, attrs={'id': '%spitching' % teams[1]})
+        print('Preparing box scores for: ', teams)
 
-        tables.append(awayBatting)
-        tables.append(homeBatting)
-        tables.append(awayPitching)
-        tables.append(homePitching)
+        # Save tables for away/home batting/pitching for individual box score
+        awaybatting = pd.read_html(source, attrs = {'id': '%sbatting' % teams[0]})
+        homebatting = pd.read_html(source, attrs = {'id': '%sbatting' % teams[1]})
+        awaypitching = pd.read_html(source, attrs={'id': '%spitching' % teams[0]})
+        homepitching = pd.read_html(source, attrs={'id': '%spitching' % teams[1]})
 
-        counter+=1
-        print(counter)
+        # Append individual box scores to masters
+        masterAwayBatting.append(awaybatting)
+        masterHomeBatting.append(homebatting)
+        masterAwayPitching.append(awaypitching)
+        masterHomePitching.append(homepitching)
+
+    masterBoxes.append(masterAwayBatting)
+    masterBoxes.append(masterHomeBatting)
+    masterBoxes.append(masterAwayPitching)
+    masterBoxes.append(masterHomePitching)
+
+    return masterBoxes
+
+        # print(teams)
 
 
-getBox()
+print(getBoxes())
+print('Above is a list of all away/home batting/pitching data for the specified number of games')
