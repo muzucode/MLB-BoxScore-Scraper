@@ -2,8 +2,6 @@ import requests
 import re
 import pandas as pd
 
-import html5lib
-from bs4 import BeautifulSoup
 pd.set_option('display.max_columns', 15)
 pd.set_option('display.width', 1000)
 import lxml
@@ -62,7 +60,7 @@ def getBoxes():
 
         # Get away and home team names for dynamic design
         def getTeams():
-            # Search for <title> to dynamically assign team variables
+            # Search for <title> tag to dynamically assign team variables
             ss1 = '<title>'
             ss2 = '</title>'
             matches1 = re.finditer(ss1, source)
@@ -70,8 +68,10 @@ def getBoxes():
             matches2 = re.finditer(ss2, source)
             matches_positions2 = [match.start() for match in matches2]
 
+            # Set two indexes equal to start/end of <title> tag
             ind1 = matches_positions1[0]
             ind2 = matches_positions2[0]
+
             # X = entire title code
             x = source[ind1 + 7:ind2]
             # Clean up title code for indexing
@@ -96,6 +96,7 @@ def getBoxes():
                         # Break statement to leave 'at' instance cycling
                         # Once an 'at' meets this condition, then the problem is solved
                         break
+                    # STAEMENT BELOW IS FOR DEBUGGING ONLY
                     # else:
                     #     print('--at-- #',r+1,' of ',len(matches_positions3), ' was skipped over for --at-- to --@-- replacement due to being in a team name.')
 
@@ -103,8 +104,6 @@ def getBoxes():
             z = x.index('BoxScore')
             awayTeam = x[0:y]
             homeTeam = x[y + 1:z]
-
-            # Final cleaning (removing @ from team names with 'at' in them
 
             return [awayTeam, homeTeam]
 

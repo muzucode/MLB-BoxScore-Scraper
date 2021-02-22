@@ -1,14 +1,14 @@
 Planning
 
 HTML/Site Layout
-Page - Season (box scores list)  : https://www.baseball-reference.com/
-leagues/MLB/2018-schedule.shtml
+-Page - Season (box scores list)  : https://www.baseball-reference.com/
+-leagues/MLB/2018-schedule.shtml
 
 Page - Box score : https://www.baseball-reference.com/
-/BAL/BAL201803290.shtml
-YYYY.mm.dd.0 for single game
-YYYY.mm.dd.1 for game 1 of double header
-YYYY.mm.dd.2 for game 2 of double header
+-/BAL/BAL201803290.shtml
+-YYYY.mm.dd.0 for single game
+-YYYY.mm.dd.1 for game 1 of double header
+-YYYY.mm.dd.2 for game 2 of double header
 ---------------------------------------------------------------------------
 Notes:
 Box score link is surrounded by <em></em>
@@ -26,5 +26,11 @@ Scraping phase 2 - Gather Boxes Page HTML
 -Extract pitching tables to separate pandas dataframes
 -Concat both tables
 
+Scraping phase 3.a - Add my columns for tracking purposes
+-Add game ID col
+-Add game date col
+-Add Team specifier col
 
+Scraping phase 3.b - Write to CSVs
+-Write all 4 master dfs to CSVs
 
