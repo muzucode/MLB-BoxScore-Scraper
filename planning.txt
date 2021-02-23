@@ -24,7 +24,7 @@ Scraping phase 2 - Gather Boxes Page HTML
 -Save home team name to variable (listed first)
 -Extract batting tables to separate pandas dataframes
 -Extract pitching tables to separate pandas dataframes
--Concat both tables
+-Add guidance columns to all 4 sub DFs
 
 Scraping phase 3.a - Add my columns for tracking purposes
 -Add game ID col
